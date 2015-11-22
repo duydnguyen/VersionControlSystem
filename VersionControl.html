@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://pages.cs.wisc.edu/~cstapleton/367/programs/pg3/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CS 367</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="The course webpage for CS367 Summer 2015">
+    <link rel="canonical" href="http://pages.cs.wisc.edu/~cstapleton/367http://pages.cs.wisc.edu/~cstapleton/367/programs/pg3/">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./Project3_files/bootstrap.min.css">
+    <link rel="stylesheet" href="./Project3_files/main.css">
+   <link href="./Project3_files/css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="./Project3_files/default.min.css">
+<script src="./Project3_files/highlight.min.js"></script><style type="text/css"></style>
+</head>
+
+    <body>
+        <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        
+      </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+
+
+      <div class="container">
+          <p>
+            </p><div class="post">
+  <header class="post-header">
+    <h2></h2>
+  </header>
+  <article class="post-content">
+ 
+
+<!--Announcements division end-->
+
+<!--Overview division start-->
+</p><div>
+<a name="Overview"></a>
+<h2>Overview</h2>
+
+<h3>Goals</h3>
+<p>The goals of this assignment are to:</p>
+<ul>
+  <li>Understand the Stack and Queue ADTs.</li>
+  <li>Implement the Stack ADT.</li>
+  <li>Implement the Queue ADT using a circular array.</li>
+  <li>Gain more experience writing generic classes that implement Java interfaces.</li>
+  <li>Complete an application that uses stacks and queues.</li>
+  <li>Get more practice with console I/O.</li>
+</ul>
+<h3>Description</h3>
+<p>
+A version control system (VCS) is a program used to store a group of documents and also
+record changes that occur to those documents over time so that older versions can be recalled
+later. These documents are general and can be source files, images, word documents, etc. A
+collection of documents (typically related to each other) is stored in a <i><b>repository</b></i>
+for the VCS. One of today's most popular VCS's is
+<a href="http://en.wikipedia.org/wiki/Git_%28software%29">Git</a> and the
+<a href="http://en.wikipedia.org/wiki/GitHub">GitHub</a> repository, which you may find
+useful when working in teams in future CS courses
+(<a href="https://try.github.io/levels/1/challenges/1">introduction to Git</a>).</p>
+
+<p>
+Most VCS's allow multiple users to edit the "same" document at same time. A user must
+subscribe to a repository to gain permission to access it. Once subscribed, the documents
+in that repository must be <i><b>checked out</b></i> before a user can modify them. When
+a repository is checked out a local copy is made of the documents in the repository, which is
+known as your <i><b>working copy</b></i>. You can then modify your working copy as much
+as you desire. Changes done to a working copy are only reflected in the repository
+after those changes are <i><b>checked in</b></i>. When multiple people are working on a
+repository, they're actually changing their working copies and only making local changes.</p>
+
+<p>
+The check in process can be tricky since multiple users may have changed the same sections
+of a document resulting in conflicts that need to be merged together into the repository. A VCS
+may provide facilities to automatically resolve such conflicts or the merging may simply be
+done manually by the users.
+</p>
+<p>The goal of this program is to simulate some of the basic functionalities 
+of a VCS. We will design our simulation as discussed below:
+</p><ul>
+  <li>Users can create/delete user accounts.</li>
+  <li>Users can create repositories. A user who creates a repository is 
+  the administrator of that repository and can delete it. </li>
+  <li>Administrator of a repository can subscribe other users to the repository. 
+   The administrator is auto-subscribed to the repository.</li>
+  <li>A subscribed user of a repository can check out a working copy of the 
+  repository, add/delete/edit documents in their working copy and finally check-in 
+  the set of changes to the repository.</li>
+  <li>The change set(s) or check-in(s) from user(s) to a repository will be 
+  pending (queued) until the administrator of that repository approves/denies the 
+  change set(s). Once a change set is approved all the changes in that change set
+  will be applied to the repository. This is a very simple approach that we'll use 
+  in our simulation to resolve the merge conflicts.</li>
+  <li>All changes done to a repository will be recorded. This will be done 
+  by saving (or stacking) different versions of repository as the data items 
+  contained in it changes. </li>
+  <li>Administrator can revert a repository to its earlier versions, i.e., undo 
+  the change set that was made in previous check-ins.</li> 
+</ul>
+<p></p>
+<p>To simplify the program, you will be provided with complete implementation for 
+most classes and partial implementation for most other classes including the 
+application (main) program. You will have to complete the partial code and 
+implement the <tt>StackADT&lt;E&gt;</tt> and <tt>QueueADT&lt;E&gt;</tt> interfaces 
+in order to complete the simulation of the Version Control System.
+</p>
+</div>
+<!--Overview division end-->
+
+<!--Specifications division start-->
+<div>
+<a name="Specifications"></a>
+<h2>Specifications</h2> 
+
+<h3>The <tt>StackADT&lt;E&gt;</tt> Interface and the <tt>SimpleStack&lt;E&gt;</tt> 
+Class</h3>
+<p>A <tt>StackADT&lt;E&gt;</tt> interface provided to you (see
+<a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/StackADT.java"><tt>StackADT.java</tt></a>),
+is a generic interface that you will implement in your <tt>SimpleStack</tt>
+class. The interface describes the following methods:</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+  <tbody>
+    <tr>
+      <th width="40%">Method</th>
+       <th width="60%">Description</th>
+    </tr>
+    <tr>
+      <td><tt>void push(E item)</tt></td>
+      <td>Adds an <tt>item</tt> to the top of the&nbsp;<tt>Stack</tt>.
+      </td>
+    </tr>
+    <tr>
+      <td><tt>E pop()</tt></td>
+      <td>Removes an&nbsp;<tt>item</tt> from the top of the&nbsp;<tt>Stack</tt> and returns it.
+      </td>
+    </tr>
+    <tr><td><tt>E peek()</tt></td><td>Return the <tt>item</tt> on top of the&nbsp;<tt>Stack</tt> without removing it.
+      </td></tr><tr>
+      <td><tt>boolean isEmpty()</tt></td>
+      <td>Returns true iff the&nbsp;<tt>Stack</tt> is empty.
+      </td>
+    </tr>
+    <tr>
+      <td><tt>boolean size()</tt></td>
+      <td>Returns the number of elements in the&nbsp;<tt>Stack</tt>.</td>
+    </tr>
+    <tr>
+      <td><tt>String toString()</tt></td>
+      <td>Return a string representation of the 
+elements of the <tt>Stack</tt> in top to bottom order 
+with each element appended with a newline character. If the
+<tt>Stack</tt> is empty, it simply returns an empty string (i.e. "").</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>StackADT</tt>
+interface in any way.<br></font>
+<font color="red">Do <b><em>not</em></b> add any public methods or fields to
+your <tt>SimpleStack</tt> class other than the constructor: <tt>SimpleStack()</tt>, and those in the <tt>StackADT</tt> interface.
+</font> <br>
+Your <tt>SimpleStack</tt> class must have the private instance fields <tt>E
+items[]</tt>, <tt>int numItems</tt> and private static final  field <tt>int INITSIZE</tt> (intialized to 10). <tt> INITSIZE</tt> denotes the initial size of the <tt>items[]</tt> array and it should be expanded iff it becomes full.</p>
+
+<h3>The <tt>QueueADT&lt;E&gt;</tt> Interface and the <tt>SimpleQueue&lt;E&gt;</tt> 
+Class</h3>
+<p>A <tt>QueueADT&lt;E&gt;</tt> interface provided to you (see
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p2/files/ListADT.java"><tt>ListADT.java</tt></a>),
+<a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/QueueADT.java"><tt>QueueADT.java</tt></a>),
+is a generic interface that you will implement in your <tt>SimpleQueue</tt>
+class. The interface describes the following methods:</p>
+
+<table border="1" cellpadding="2" cellspacing="0">
+  <tbody>
+    <tr>
+      <th width="40%">Method</th>
+       <th width="60%">Description</th>
+    </tr>
+    <tr>
+      <td><tt>void enqueue(E item)</tt></td>
+      <td>Adds an <tt>item</tt> to the back of the&nbsp;<tt>Queue</tt>.
+      </td>
+    </tr>
+    <tr>
+      <td><tt>E dequeue()</tt></td>
+      <td>Removes an&nbsp;<tt>item</tt> from the front of the&nbsp;<tt>Queue</tt> 
+    and returns it.</td>
+    </tr>
+    <tr><td><tt>E peek()</tt></td><td>Return the <tt>item</tt> in front of the&nbsp;<tt>Queue</tt> without removing it.</td>
+  </tr>
+  <tr>
+      <td><tt>boolean isEmpty()</tt></td>
+      <td>Returns true iff the&nbsp;<tt>Queue</tt> is empty.
+      </td>
+    </tr>
+    <tr>
+      <td><tt>boolean size()</tt></td>
+      <td>Returns the number of elements in the <tt>Queue</tt>.</td>
+    </tr>
+    <tr>
+      <td><tt>String toString()</tt></td>
+      <td>Return a string representation of the
+elements of the <tt>Queue</tt> in front to back order 
+with each element appended with a newline character. If the
+<tt>Queue</tt> is empty, it simply returns an empty string (i.e. "").</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>QueueADT</tt> interface in any way.<br></font>
+<font color="red">Do <b><em>not</em></b> add any public methods or fields to
+your <tt>SimpleQueue</tt> class other than the constructor: <tt>SimpleQueue()</tt>, and those in the <tt>QueueADT</tt> 
+interface.</font><br>
+Your <tt>SimpleQueue</tt> class must have the private data fields <tt>E
+items[]</tt>, <tt>int numItems</tt>, <tt>int frontIndex</tt>, <tt>int rearIndex</tt> and private static final field <tt>int INITSIZE</tt> (intialized to 10). <tt> INITSIZE</tt> denotes the initial size of the <tt>items[] array</tt> and it should be expanded iff it becomes full.</p>
+
+
+<h3>The <tt>EmptyStackException</tt> and <tt>EmptyQueueException</tt> classes</h3>
+<p>The <tt>EmptyStackExcpetion</tt> and the <tt>EmptyQueueExcpetion</tt>
+classes are provided for you
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/EmptyStackException.java"><tt>EmptyStackException.java</tt></a>,
+<a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/EmptyQueueException.java"><tt>EmptyQueueException.java</tt></a>) 
+as checked exceptions, which you'll use for your <tt>SimpleStack</tt> and
+<tt>SimpleQueue</tt> classes. </p>
+
+<p><font color="red">Do <b><em>not</em></b> modify the
+<tt>EmptyStackException</tt> or the <tt>EmptyQueueException</tt>
+classes in any way.</font></p>
+
+
+<h3>The <tt>Document</tt> Class</h3>
+<p>The <tt>Document</tt> class represents a single document in a repository.</p>
+<p>
+A complete implementation of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/Document.java"><tt>Document.java</tt></a>).
+It has the following fields, methods and constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>String docName</tt></td>
+    <td>The name of the document. It's a unique identifier for a document in a
+  repository.</td>
+  </tr>
+  <tr>
+    <td><tt>String repoName</tt></td>
+    <td>The name of the repository to which the document belongs.</td>
+  </tr>
+  <tr>
+    <td><tt>String content</tt></td>
+    <td>The content of the document. It is allowed to be modified.</td>
+  </tr>
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>Document(String docName, String content, String repoName)</tt></td>
+    <td>Constructs a <tt>document</tt> object.</td>
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>String getName()</tt></td>
+    <td>Returns the name of the document.</td>
+  </tr>
+  <tr>
+    <td><tt>String getReponame()</tt></td>
+    <td>Returns the name of the repository to which the document belongs.</td>
+  </tr>
+  <tr>
+    <td><tt>String getContent()</tt></td>
+    <td>Returns the content of the document.</td>
+  </tr>
+  <tr>
+    <td><tt>void setContent(String content)</tt></td>
+    <td>Sets the content of the document.</td>
+  </tr>
+  <tr>
+    <td><tt>boolean equals(Object obj)</tt></td>
+    <td> Compares two document objects. Returns true if the name of the 
+    documents match, false otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>String toString()</tt></td>
+    <td> Returns the string representation of the user object.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>Document</tt> class 
+in any way.</font></p>
+
+<h3>The <tt>Repo</tt> Class</h3>
+<p>The <tt>Repo</tt> class represents a single repository in VCS. </p>
+ 
+<p>A skeleton of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/Repo.java"><tt>Repo.java</tt></a>). You must 
+complete the tasks marked as TODO. It has the following fields, methods and 
+constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt> String repoName</tt></td>
+    <td>The name of the repo. It's a unique identifier for a repository.</td>
+  </tr>
+  <tr>
+    <td><tt>User admin</tt></td>
+    <td>The user who is the administrator of the repo.</td>
+  </tr>
+  <tr>
+    <td><tt>int version</tt></td>
+    <td>The current version of the repo. Initial version is 0 (for an empty repo).</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;Document&gt; docs</tt></td>
+    <td>The list of documents in the repo.</td>
+  </tr>
+  <tr>
+    <td><tt>QueueADT&lt;ChangeSet&gt; checkIns</tt></td>
+    <td>The check-ins queued by different users for approval by the admin.</td>
+  </tr>
+  <tr>
+    <td><tt>StackADT&lt;RepoCopy&gt; versionRecords</tt></td>
+    <td>The copies of different versions of repo at points when any check-in was applied. 
+  The top of this stack should always contain a copy of 
+  current version of the repo and the bottom of the stack should contain a copy of 
+  oldest version of the repo (i.e. version 0).
+</td>
+  </tr>
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>Repo(User admin, String repoName)</tt></td>
+    <td>Constructs a <tt>repo</tt> object. Initializes the
+  fields, sets the initial version number to 0 and
+  pushes a copy (version 0) of the repo to the <tt>versionRecords</tt>.</td>
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>String getName()</tt></td>
+    <td>Returns the name of the repo.</td>
+  </tr>
+  <tr>
+    <td><tt>User getAdmin()</tt></td>
+    <td>Returns the user who is administrator for this repo.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;Document&gt; getDocuments()</tt></td>
+    <td>Returns a copy of list of documents in the repo. </td>
+  </tr>
+    <tr>
+    <td><tt>Document getDocument(String searchName)</tt></td>
+    <td> Returns a document matching a particular name within the repository. If no 
+  document is found with that name, null is returned.</td>
+  </tr>
+  <tr>
+    <td><tt>int getVersion()</tt></td>
+    <td>Returns the current version of the repository. </td>
+  </tr>
+  <tr>
+    <td><tt>int getVersionCount() </tt></td>
+    <td>Returns the count of versions of this repository.</td>
+  </tr>
+  <tr>
+    <td><tt>String getVersionHistory()</tt></td>
+    <td>Returns the version records (most recent to least recent) of the repository.</td>
+  </tr>
+  <tr>
+    <td><tt>int getCheckInCount()</tt></td>
+    <td>Returns the number of pending check-ins queued for admin approval.</td>
+  </tr>
+  <tr>
+    <td><tt>void queueCheckIn(ChangeSet checkIn)</tt></td>
+    <td>Queues the <tt>checkIn</tt> containing a set of changes to be made to the 
+  repository for admin approval.</td>
+  </tr>
+  <tr>
+    <td><tt>ChangeSet getNextCheckIn(User requestingUser)</tt></td>
+    <td>Returns and removes the next check-in in the queue, if <tt>requestingUser</tt>
+  is the administrator. Returns null, if either <tt>requestingUser</tt> is not the administrator 
+  or there is no check-in pending in the queue.</td>
+  </tr>
+  <tr>
+    <td><tt>ErrorType approveCheckIn(User requestingUser, ChangeSet checkIn)</tt></td>
+    <td>Applies the set of changes contained in <tt>checkIn</tt> to the repository, 
+  increments the version, and pushes a copy of the changed repository in the 
+  versionRecords, if the <tt>requestingUser</tt> is the administrator. Returns 
+  <tt>ACCESS_DENIED</tt> if <tt>requestingUser</tt> is not the administrator, 
+  <tt>SUCCESS</tt> otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>ErrorType revert(User requestingUser)</tt></td>
+    <td> Reverts the repository to the previous version (i.e. undoes last check-in)
+  using the versionRecords. This is done only if the current version is not the 
+  oldest version and the <tt>requestingUser</tt> is the administrator. Returns 
+  <tt>ACCESS_DENIED</tt> if <tt>requestingUser</tt> is not the administrator, 
+  <tt>NO_OLDER_VERSION</tt> if the present version is the oldest version, 
+  <tt>SUCCESS</tt> otherwise.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> add any public methods or fields to 
+the <tt>Repo</tt> class and do <b><em>not</em></b> change any method that we have
+already implemented.</font></p>
+
+
+<h3>The <tt>User</tt> Class</h3>
+<p>The <tt>User</tt> class represents a user of VCS.</p>
+<p> A skeleton of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/User.java"><tt>User.java</tt></a>). You must complete
+the tasks marked as TODO. It has the following fields, methods and constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>String userName</tt></td>
+    <td>The name of the user. It's a unique identifier for a user.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;String&gt; subRepos</tt></td>
+    <td>The list of names of the repositories to which the user is subscribed.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;ChangeSet&gt; pendingCheckIns</tt></td>
+    <td>The list of all pending check-ins not yet made by the user. There can be 
+  at most one pending check-in per repository in the list.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;RepoCopy&gt; workingCopies</tt></td>
+    <td>The list of all local working copies of the user. There can be at most
+  one working copy per repository in the list.</td>
+  </tr>
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>User(String userName)</tt></td>
+    <td>Constructs a <tt>User</tt> object and initializes 
+  all the fields.</td>
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>String getName()</tt></td>
+    <td>Returns the name of the user.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;String&gt; getAllSubRepos() </tt></td>
+    <td>Returns a copy of list of the subscribed repositories.</td>
+  </tr>
+  <tr>
+    <td><tt>RepoCopy getWorkingCopy(String repoName)</tt></td>
+    <td>Returns the local working copy for a repository if exists, null otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>void subscribeRepo(String repoName)</tt></td>
+    <td>Subscribes the user to a repository. Adds <tt>repoName</tt> to the 
+  subscribed list if not already present.  
+  </td>
+  </tr>
+  <tr>
+    <td><tt>void unsubscribeRepo(String repoName)</tt></td>
+    <td>Un-subscribes the user from a repository. Removes <tt>repoName</tt> from 
+   the subscribed list. </td>
+  </tr>
+  <tr>
+    <td><tt>boolean isSubRepo(String repoName)</tt></td>
+    <td>Checks if the user is subscribed to a particular repository. Returns 
+  true if <tt>repoName</tt> is subscribed, false otherwise.
+  </td>
+  </tr>
+  <tr>
+    <td><tt>void addToPendingCheckIn(Document doc, Change.Type type, String repoName)</tt></td>
+    <td>Creates and adds a new change (add, edit or delete) to the pending check-in for a 
+    repository. If there is no pending check-in for <tt>repoName</tt> in 
+    the <tt>pendingCheckIns</tt> list, a new checkIn is created and added to the list. 
+  </td>
+  </tr>
+  <tr>
+    <td><tt>ChangeSet getPendingCheckIn(String repoName)</tt></td>
+    <td>Returns the pending check-in for <tt>repoName</tt> if exists, null otherwise. </td>
+  </tr>
+  <tr>
+    <td><tt>ErrorType checkIn(String repoName)</tt></td>
+    <td>Queues the local changes (pending check-in) if present to a repository and removes it from the pending checkin list. Returns 
+  <tt>NO_LOCAL_CHANGES</tt>, if there is no pending check-in for <tt>repoName</tt>, 
+  <tt>SUCCESS</tt> otherwise.  
+  </td>
+  </tr>
+  <tr>
+    <td><tt>ErrorType checkOut(String repoName)</tt></td>
+    <td> Creates a new working copy for the current version of the repository if the user is subscribed
+  to it. Checkout involves: 1.deleting any old working copy for <tt>repoName</tt> in the workingCopies list, 2.deleting any pending check-in for <tt>repoName</tt> in the pendingCheckIns list, 3.creating a new working copy (or RepoCopy object) for the current version of <tt>repoName</tt> containing all its current documents and 4.adding the new working copy to the workingCopies list. Returns <tt>REPO_NOT_SUBSCRIBED</tt> if the repository is not subscribed, 
+  <tt>SUCCESS</tt> otherwise. </td>
+  </tr>
+  <tr>
+    <td><tt>String toString()</tt></td>
+    <td> Returns the string representation of the user object.</td>
+  </tr>
+</tbody>
+</table>
+
+<p><font color="red">Do <b><em>not</em></b> add any public methods or fields to the 
+<tt>User</tt> class and do <b><em>not</em></b> change any method that we have
+already implemented.</font></p>
+
+
+<h3>The <tt>RepoCopy</tt> Class</h3>
+<p>The <tt>RepoCopy</tt> class represents a copy of a particular version of the 
+repository.</p>
+<p> A complete code of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/RepoCopy.java"><tt>RepoCopy.java</tt></a>). 
+It has the following fields, methods and constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>String repoName</tt></td>
+    <td>The name of the repo represented by the copy.</td>
+  </tr>
+  <tr>
+    <td><tt>int version</tt></td>
+    <td>The version of the copied repo.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;Document&gt;</tt></td>
+    <td>The list of documents in the copy.</td>
+  </tr>
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>RepoCopy(String repoName, int version, List&lt;Document&gt; docs)</tt></td>
+    <td>Constructs a <tt>RepoCopy </tt> object.</td>
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>String getReponame()</tt></td>
+    <td>Returns the name of the repository represented by this copy.</td>
+  </tr>
+  <tr>
+    <td><tt>int getVersion()</tt></td>
+    <td>Returns the version number of the repository represented by this copy.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;Document&gt; getDocuments() </tt></td>
+    <td>Returns a copy of list of documents in this copy.</td>
+  </tr>
+  <tr>
+    <td><tt>addDoc(Document doc)</tt></td>
+    <td>Adds a new document to the copy if another document with the same name 
+  does not exists. Returns true if document was added, false otherwise. </td>
+  </tr>
+  <tr>
+    <td><tt>void delDoc(Document doc)</tt></td>
+    <td>Deletes a document from the copy.</td>
+  </tr>
+  <tr>
+    <td><tt>Document getDoc(String docName)</tt></td>
+    <td> Returns a document with name <tt>docName</tt> from the copy if found, 
+  null otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>String toString()</tt></td>
+    <td> Returns the string representation of the RepoCopy object.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>RepoCopy</tt> class in any way.</font></p>
+
+<h3>The <tt>Change</tt> Class</h3>
+<p>The <tt>Change</tt> class represents a change made to a repository. A change 
+can be addition, deletion or modification of a document.</p><p>
+</p><p>A complete implementation of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/Change.java"><tt>Change.java</tt></a>). 
+It has the following fields, methods and constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>Document doc</tt></td>
+    <td>The changed (added/deleted/edited) document.</td>
+  </tr>
+  <tr>
+    <td><tt>enum Type{ADD,DEL,EDIT}</tt></td>
+    <td>An enumeration of permissible types of changes.</td>
+  </tr>
+  <tr>
+    <td><tt>Type type</tt></td>
+    <td>The type of change contained in this Change object.</td>
+  </tr>
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>Change(Document doc, Change.Type type)</tt></td>
+    <td>Constructs a <tt>Change</tt> object.</td>
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>Document getDoc()</tt></td>
+    <td>Returns the document contained in the change.</td>
+  </tr>
+  <tr>
+    <td><tt>Change.Type getType()</tt></td>
+    <td>Returns the type of change.</td>
+  </tr>
+  <tr>
+    <td><tt>String toString()</tt></td>
+    <td>Returns the string representation of the change.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>Change</tt> class in any way.</font></p>
+
+<h3>The <tt>ChangeSet</tt> Class</h3>
+<p>The <tt>ChangeSet</tt> class represents a set of changes made by a user to a repository. 
+</p>
+<p>A skeleton of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/ChangeSet.java"><tt>ChangeSet.java</tt></a>). You must complete
+the tasks marked as TODO. It has the following fields, methods and constructor:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>QueueADT&lt;Change&gt; changes</tt></td>
+    <td>A queue of changes in this <tt>ChangeSet</tt> object.</td>
+  </tr>
+  <tr>
+    <td><tt>String repoName</tt></td>
+    <td>The name of the repository to which the changes belong.</td>
+  </tr>
+  
+  <tr>
+    <th width="40%">Constructor</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>ChangeSet(String repoName)</tt></td>
+    <td>Constructs a <tt>changeSet</tt> object. Initializes all the fields.</td> 
+  </tr>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>String getReponame()</tt></td>
+    <td>Returns the repository's name to which this change set belongs.</td>
+  </tr>
+  <tr>
+    <td><tt>Change getNextChange() </tt></td>
+    <td>Returns and removes the next change in the queue.</td>
+  </tr>
+  <tr>
+    <td><tt>int getChangeCount() </tt></td>
+    <td>Returns the count of changes contained in the change set.</td>
+  </tr>
+  <tr>
+    <td><tt>void addChange(Document doc, Change.Type type) </tt></td>
+    <td>Queues a new change.</td>
+  </tr>
+  <tr>
+    <td><tt>String toString()</tt></td>
+    <td>Returns the string representation of the ChangeSet.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> add any public methods or fields to 
+the <tt>ChangeSet</tt> class and do <b><em>not</em></b> change any method that we have
+already implemented.</font></p>
+
+
+
+<h3>The <tt>VersionControlDb</tt> Class</h3>
+
+<p>The <tt>VersionControlDb</tt> class represents the database of the Version Control System.
+It stores information about all the registered users and repositories.</p>
+<p>A complete code of this class is provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/VersionControlDb.java"><tt>VersionControlDb.java</tt></a>).
+It has the following static fields and methods:</p>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tbody>
+  <tr>
+    <th width="40%">Field</th>
+    <th width="60%">Description</th>
+  </tr>
+  <tr>
+    <td><tt>List&lt;User&gt; users</tt></td>
+    <td>The list of all registered users. All user names should be unique.</td>
+  </tr>
+  <tr>
+    <td><tt>List&lt;Repo&gt; repos</tt></td>
+    <td>The list of all repositories. All repository names should be unique.</td>
+  </tr>
+ 
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><tt>Repo findRepo(String repoName)</tt></td>
+    <td>Finds a repository with name <tt>repoName</tt> in the database. 
+  Returns the Repo object if the repository is found, null otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>User findUser(String userName)</tt></td>
+    <td>Finds a user with name <tt>userName</tt> in the database. 
+  Returns the User object if the user is found, null otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>Repo addRepo(String repoName, User user)</tt></td>
+    <td>Creates and adds a new repository to the database if there exists no 
+   repository in the database with same name. Returns the repo object if 
+   the repository got successfully added, null otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>void delRepo(Repo repo)</tt></td>
+    <td>Deletes an existing repository from the database. Also un-subscribes all
+    the users subscribed to the repository.</td>
+  </tr>
+  <tr>
+    <td><tt>User addUser(String userName)</tt></td>
+    <td> Adds a new user to the database if there exists no user in the database
+   with same name. Returns the user object if user got added successfully, 
+   null otherwise.</td>
+  </tr>
+  <tr>
+    <td><tt>void delUser(User user)</tt></td>
+    <td> Deletes an existing user from the database. Also deletes any existing 
+    repository that was created by that user.</td>
+  </tr>
+</tbody>
+</table>
+<p><font color="red">Do <b><em>not</em></b> modify the <tt>VersionControlDb</tt> class in any way.</font></p>
+
+
+
+<a name="main"></a>
+<h3>The <tt>VersionControlApp</tt> Main Class</h3>
+
+<p>The application program, <tt>VersionControlApp</tt>, provides a console based 
+interface to interact with the Version Control System using  a set of commands (described later). 
+</p>
+<p> 
+A skeleton of this class is also provided for you 
+(see <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/VersionControlApp.java"><tt>VersionControlApp.java</tt>)</a>.
+The skeleton already handles the console input, parses the user input and validates it. 
+It also implements the main menu commands, but does not take any actions for the 
+user menu and repo menu commands (described below in details). 
+Your task is to implement the handlers for these commands. The commands that you 
+need to implemented are also listed as <tt>TODO</tt> in the skeleton.
+</p><p>
+</p><p>The VersionControlApp commands are:</p>   
+<b> Main Menu Commands</b>
+<table border="1" cellpadding="2" cellspacing="0">
+<tbody>
+  <tr>
+    <th width="18%">Command format</th>
+    <th width="82%">Description</th>
+  </tr>
+  <tr>
+    <td align="center"><tt>au &lt;username&gt; </tt></td>
+    <td>Adds a new user to the database if a user with same username doesn't 
+  already exists. Prints <tt>USERNAME_ALREADY_EXISTS</tt> if a user with same username 
+  exists, else prints <tt>SUCCESS</tt>.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>du &lt;username&gt;</tt></td>
+    <td>Deletes an existing user from the database. Prints <tt>USER_NOT_FOUND</tt> if
+  user with username doesn't exists, else prints <tt>SUCCESS</tt>.
+    </td>
+  </tr>  
+  <tr>
+    <td align="center"><tt>li &lt;username&gt;</tt></td>
+    <td>
+  Logs in an existing user. Prints <tt>USER_NOT_FOUND</tt> if the user does not 
+  exists, else prints <tt>SUCCESS</tt> and takes the user to the User Menu prompt
+  (described later).
+    </td>
+    </tr>
+  <tr>
+    <td align="center"><tt>he</tt></td>
+    <td>
+  Prints the main menu help.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>qu</tt></td>
+    <td>
+  Quits the main menu and exits the program.
+    </td>
+    </tr>
+</tbody>
+</table>
+<br>
+<b> User Menu Commands</b>
+<table border="1" cellpadding="2" cellspacing="0">
+<tbody>
+  <tr>
+    <th width="18%">Command format</th>
+    <th width="82%">Description</th>
+  </tr>
+  <tr>
+    <td align="center"><tt>ar &lt;reponame&gt; </tt></td>
+    <td>Adds a new repository with the logged-in user as its admin to the database 
+  and subscribes the logged-in user to the repository, 
+  if there exists no repository with reponame. Prints <tt>REPONAME_ALREADY_EXISTS</tt> 
+  if a repository with reponame exists, else prints <tt>SUCCESS</tt>.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>dr &lt;reponame&gt;</tt></td>
+    <td>Deletes an existing repository from the database if the logged-in user 
+  is the admin for the repository. Prints <tt>REPO_NOT_FOUND</tt> 
+  if repository with reponame doesn't exists, else if
+  the logged-in user is not the admin for the repository prints <tt>ACCESS_DENIED</tt>, else prints
+  <tt>SUCCESS</tt>.
+    </td>
+  </tr>  
+  <tr>
+    <td align="center"><tt>or &lt;reponame&gt;</tt></td>
+    <td>
+  Opens an existing repository if the logged-in user is subscribed to the repository. 
+  Opening a repository involves checking out a local working copy 
+  for the repository <b>if it doesn't already exist</b> and taking the logged-in user 
+  to the Repo Menu prompt (described later) so that the user can make changes to
+  the repository and/or its working copy. 
+  Prints <tt>REPO_NOT_FOUND</tt> if the repository with reponame doesn't exists, else 
+  if the logged-in user is not subscribed to 
+  the repository prints <tt>REPO_NOT_SUBSCRIBED</tt>, else
+prints <tt>SUCCESS</tt>.
+  
+    </td>
+    </tr>
+<tr>
+    <td align="center"><tt>lr</tt></td>
+    <td>
+  Lists the logged-in user's subscribed repositories.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>he</tt></td>
+    <td>
+  Prints the user menu help.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>lo</tt></td>
+    <td>
+  Logs out the logged-in user and goes back to the main menu prompt.
+    </td>
+</tr>
+</tbody>
+</table>
+<br>
+<b> Repo Menu Commands</b>
+<table border="1" cellpadding="2" cellspacing="0">
+<tbody>
+  <tr>
+    <th width="18%">Command format</th>
+    <th width="82%">Description</th>
+  </tr>
+  <tr>
+    <td align="center"><tt>su &lt;username&gt; </tt></td>
+    <td>Subscribes an existing user (with &lt;username&gt; ) to the current repository 
+  if the logged-in user is the admin of the current repository. Prints <tt>USER_NOT_FOUND</tt> 
+  if the no user with &lt;username&amp;gt is found, else if the logged-in
+  user is not the admin for the current repository  prints <tt>ACCESS_DENIED</tt>, 
+  else prints <tt>SUCCESS</tt>.
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><tt>ci</tt></td>
+    <td>Check-in or queues the pending changes in the local working copy to the 
+  current repository for admin approval. Prints <tt>NO_LOCAL_CHANGES</tt>, if there are 
+  no pending changes in the working copy of the repository, else prints <tt>SUCCESS</tt>.
+    </td>
+  </tr>  
+  <tr>
+    <td align="center"><tt>co</tt></td>
+    <td>
+  Check-out the latest version of the current repository into the working copy 
+  of the logged in user and prints <tt>SUCCESS</tt>.
+    </td>
+    </tr>
+<tr>
+    <td align="center"><tt>rc</tt></td>
+    <td>
+  Allows the admin to review the current repository's <b>queued checkins</b> and
+  approve/deny those checkins. Prints <tt>NO_PENDING_CHECKINS</tt>, if there are no
+  <b>queued checkins</b> in the current repository, else if the 
+  logged-in user is not the admin of the current repository prints <tt>ACCESS_DENIED</tt>, else removes and prints the
+  queued checkins one by one, prompts the logged-in user to approve the check-in by pressing "y" (or any other input for deny), 
+  applies any checkin to the repository if approved and finally prints <tt>SUCCESS</tt>
+  <b>after all</b> queued checkins have been processed.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>vh</tt></td>
+    <td>
+  Displays the version history for the current repository.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>re</tt></td>
+    <td>
+  Allows the admin of the current repository to revert the repository to the
+  previous version. Prints <tt>ACCESS_DENIED</tt> if logged-in user is not the admin,
+  else if the current version of repository is the oldest version prints 
+  <tt>NO_OLDER_VERSION</tt>, else prints <tt>SUCCESS</tt>.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>ld</tt></td>
+    <td>
+  Lists all the documents in the local working set of the current repository.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>vd &lt;docname&gt;</tt></td>
+    <td>
+    Displays an existing document in the logged-in user's local working copy of 
+  the current repository. 
+  Prints <tt>DOC_NOT_FOUND</tt>, if the document was not not found in the working copy,
+  else prints the document.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>ed &lt;docname&gt;</tt></td>
+    <td>
+    Edits an existing document in the logged-in user's local working copy of 
+  the current repository. 
+  Prints <tt>DOC_NOT_FOUND</tt>, if the document was not not found in the working copy,
+  else prompts the user to enter the new content for the
+  document, sets the document's content with the new content, adds the change 
+  to the <b>user's pending checkin</b> for the current repository and finally prints <tt>SUCCESS</tt>.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>ad &lt;docname&gt;</tt></td>
+    <td>
+  Adds a document to the logged-in user's local working copy of 
+  the current repository.
+  Prints <tt>DOCNAME_ALREADY_EXISTS</tt>, if the document with &lt;docname&gt; already
+  exists in the working copy else
+    prompts the user to enter the content for the document, creates a new document,
+  adds the document to the working copy, adds the change 
+  to the <b>user's pending checkin</b> for the current repository and finally prints <tt>SUCCESS</tt>.
+   </td>
+</tr>
+<tr>
+    <td align="center"><tt>dd &lt;docname&gt;</tt></td>
+    <td>
+  Deletes an document from the local working set of the current repository.
+  Prints <tt>DOC_NOT_FOUND</tt>, if the document was not not found in the working copy,
+  else deletes the document from the working copy, adds the change 
+  to the <b>user's pending checkin</b> for the current repository and finally prints <tt>SUCCESS</tt>.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>he</tt></td>
+    <td>
+  Prints the repo menu help.
+    </td>
+</tr>
+<tr>
+    <td align="center"><tt>qu</tt></td>
+    <td>
+  Quits the repo menu prompt and takes the logged-in user to user menu prompt.
+    </td>
+</tr>
+
+</tbody>
+</table>
+<br>
+
+
+<p>Complete the skeleton <a href="http://pages.cs.wisc.edu/~cstapleton/367/code/p3/files/VersionControlApp.java"><tt>VersionControlApp.java</tt></a> 
+to support each command as listed above. Your code might use <tt>Document</tt>,
+<tt>User</tt>, <tt>Repo</tt>, <tt>RepoCopy</tt>, <tt>ChangeSet</tt>, and
+<tt>VersionControlDb</tt> classes where appropriate. In order to keep your code clean 
+and easily readable, we suggest you to create helper methods for the commands 
+that you are implementing.   
+
+<!--Specifications division end-->
+
+
+
+
+  </article>
+</div>
+
+          <p></p>
+      </div> <!-- /container -->
+
+    <script src="./Project3_files/jquery-2.1.4.min.js"></script>
+<script src="./Project3_files/bootstrap.min.js"></script>
+
+    
+
+</body></html>
